@@ -1,0 +1,17 @@
+models/: Defines the "shape" of your data (e.g., what a User or Product looks like in the database).
+
+controllers/: Contains the logic for your routes (e.g., what happens when a user clicks "Login").
+
+routes/: Defines the URL endpoints (e.g., /api/auth/register).
+
+middleware/: Functions that run before the controller (e.g., checking if a user is logged in).
+
+server.js: The main entry point where the Express app is initialized and connected to MongoDB [08:53].
+
+Fields: It includes userName, email, password, and a role (defaulted to 'user').
+
+Importance: This is the first step in any MERN backend logic—specifying the model so the database knows what to expect
+
+
+10:18:00 
+11:00:00 _ paypal 
