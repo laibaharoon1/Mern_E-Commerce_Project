@@ -39,12 +39,12 @@ function MenuItems({ setOpenMobileMenu }) {
   }
 
   return (
-    <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
+    <nav className="mb-3 flex flex-col gap-2 lg:mb-0 lg:flex-row lg:items-center lg:gap-1">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <span
           key={menuItem.id}
           onClick={() => handleNavigate(menuItem)}
-          className="text-sm font-medium cursor-pointer hover:text-primary transition-colors"
+          className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-primary"
         >
           {menuItem.label}
         </span>
@@ -56,8 +56,8 @@ function MenuItems({ setOpenMobileMenu }) {
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
 
-const { cartItems } = useSelector((state) => state.shoppingCart);
-const cartItemsArray = cartItems || [];
+  const { cartItems } = useSelector((state) => state.shoppingCart);
+  const cartItemsArray = Array.isArray(cartItems) ? cartItems : [];
 
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const cartItemsArray = cartItems || [];
   }, [dispatch, user?.id]);
 
   return (
-    <div className="flex lg:items-center lg:flex-row flex-col gap-4">
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
       {/* 
         FIX: Removed the nested SheetContent from here.
         UserCartWrapper already has its own SheetContent inside it.
@@ -85,7 +85,7 @@ const cartItemsArray = cartItems || [];
           onClick={() => setOpenCartSheet(true)}
           variant="outline"
           size="icon"
-          className="relative"
+          className="relative rounded-full shadow-sm"
         >
           <ShoppingCart className="w-6 h-6" />
           {/* FIX: Badge now correctly reads cartItemsArray.length */}
@@ -106,12 +106,12 @@ const cartItemsArray = cartItems || [];
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black cursor-pointer">
             <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.userName ? user?.userName[0].toUpperCase() : "U"}
+              {user?.username ? user.username[0].toUpperCase() : "U"}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="bottom" align="end" className="w-56 bg-white">
-          <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
+          <DropdownMenuLabel>Logged in as {user?.username || "User"}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => navigate("/shop/account")}
@@ -136,11 +136,11 @@ function ShoppingHeader() {
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        <Link to="/shop/home" className="flex items-center gap-2">
-          <House className="h-6 w-6" />
-          <span className="font-bold">Ecommerce</span>
+    <header className="sticky top-0 z-40 w-full border-b bg-background/95 shadow-sm backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
+        <Link to="/shop/home" className="flex items-center gap-2 rounded-md font-bold transition-opacity hover:opacity-80">
+          <span className="rounded-md bg-primary p-1.5 text-primary-foreground"><House className="h-4 w-4" /></span>
+          <span>Ecommerce</span>
         </Link>
 
         <Sheet open={openMobileMenu} onOpenChange={setOpenMobileMenu}>

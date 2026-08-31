@@ -8,6 +8,11 @@ import { toast } from "sonner";
 function UserCartItemsContent({ cartItem }) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const unitPrice = Number(
+    cartItem?.productId?.salePrice > 0
+      ? cartItem.productId.salePrice
+      : cartItem?.productId?.price || 0
+  );
 
   function handleUpdateQuantity(typeOfAction) {
     dispatch(
@@ -78,11 +83,7 @@ function handleCartItemDelete(event) {
       <div className="flex flex-col items-end">
         <p className="font-semibold">
           $
-          {(
-            (cartItem?.productId?.salePrice > 0
-              ? cartItem?.productId?.salePrice
-              : cartItem?.productId?.price) * cartItem?.quantity
-          ).toFixed(2)}
+          {(unitPrice * Number(cartItem?.quantity || 0)).toFixed(2)}
         </p>
         <Trash
           onClick={(event) => handleCartItemDelete(event)}

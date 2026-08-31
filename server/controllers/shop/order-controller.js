@@ -7,6 +7,12 @@ const clientUrl = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
 const createOrder = async (req, res) => {
   try {
+    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+      return res.status(503).json({
+        success: false,
+        message: "PayPal is not configured. Add sandbox credentials to server/.env.",
+      });
+    }
     const userId = String(req.user.id);
     const cart = await Cart.findOne({ userId }).populate("items.productId");
     const address = await Address.findOne({ _id: req.body.addressInfo?.addressId, userId });
@@ -28,7 +34,10 @@ const createOrder = async (req, res) => {
       }],
     };
     paypal.payment.create(payment, async (error, paymentInfo) => {
-      if (error) return res.status(502).json({ success: false, message: "Unable to create PayPal payment" });
+      if (error) {
+        console.error("PayPal payment creation failed", error.response?.name || error.message);
+        return res.status(502).json({ success: false, message: "PayPal could not create the payment. Check the sandbox credentials." });
+      }
       const order = await Order.create({
         userId, cartId: String(cart._id), cartItems,
         addressInfo: { addressId: String(address._id), address: address.address, city: address.city, pincode: address.pincode, phone: address.phone, notes: address.notes },

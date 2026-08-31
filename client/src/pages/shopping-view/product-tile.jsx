@@ -7,13 +7,13 @@ import { categoryOptionsMap, brandOptionsMap } from "@/config";
 
 function ShoppingProductTile({ product, handleGetProductDetails, handleAddToCart, user }) {
   return (
-    <Card className="w-full max-w-sm mx-auto cursor-pointer">
+    <Card className="group mx-auto flex h-full w-full max-w-sm cursor-pointer flex-col overflow-hidden border bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
       <div onClick={() => handleGetProductDetails(product?._id)} >
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"
+            className="h-[280px] w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           {product?.salePrice > 0 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
@@ -21,17 +21,17 @@ function ShoppingProductTile({ product, handleGetProductDetails, handleAddToCart
             </Badge>
           ) : null}
         </div>
-        <CardContent className="p-4">
-          <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-[16px] text-muted-foreground">
+        <CardContent className="flex flex-1 flex-col p-5">
+          <h2 className="mb-3 line-clamp-1 text-lg font-bold">{product?.title}</h2>
+          <div className="mb-4 flex items-center justify-between text-sm">
+            <span className="rounded-full bg-secondary px-2.5 py-1 text-muted-foreground">
               {categoryOptionsMap[product?.category]}
             </span>
-            <span className="text-[16px] text-muted-foreground">
+            <span className="text-muted-foreground">
               {brandOptionsMap[product?.brand]}
             </span>
           </div>
-          <div className="flex justify-between items-center mb-2">
+          <div className="mt-auto flex items-center justify-between">
             <span
               className={`${product?.salePrice > 0 ? "line-through" : ""
                 } text-lg font-semibold text-primary`}
@@ -46,8 +46,8 @@ function ShoppingProductTile({ product, handleGetProductDetails, handleAddToCart
           </div>
         </CardContent>
       </div>
-      <CardFooter>
-        <Button onClick={() => handleAddToCart(product?._id, user?.id)} className="w-full">
+      <CardFooter className="pt-0">
+        <Button onClick={() => handleAddToCart(product?._id, user?.id)} className="w-full shadow-sm">
           Add to cart
         </Button>
       </CardFooter>

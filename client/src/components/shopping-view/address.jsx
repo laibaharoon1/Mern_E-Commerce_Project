@@ -48,7 +48,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
             dispatch(fetchAllAddresses(user?.id));
             setCurrentEditedId(null);
             setFormData(initialState);
-            toast({ title: "Address updated successfully" });
+            toast.success("Address updated successfully");
           }
         })
       : dispatch(
@@ -60,7 +60,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
           if (data?.payload?.success) {
             dispatch(fetchAllAddresses(user?.id));
             setFormData(initialState);
-            toast({ title: "Address added successfully" });
+            toast.success("Address added successfully");
           }
         });
   }
@@ -71,7 +71,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchAllAddresses(user?.id));
-        toast({ title: "Address deleted successfully" });
+        toast.success("Address deleted successfully");
       }
     });
   }
@@ -89,18 +89,18 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
   }
 
   function isFormValid() {
-    return Object.keys(formData)
+    return ["address", "city", "pincode", "phone"]
       .map((key) => formData[key].trim() !== "")
       .every((item) => item);
   }
 
   useEffect(() => {
-    dispatch(fetchAllAddresses(user?.id));
+    if (user?.id) dispatch(fetchAllAddresses(user.id));
   }, [dispatch, user?.id]);
 
   return (
-    <Card>
-      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
+    <Card className="border bg-white shadow-sm">
+      <div className="mb-2 grid grid-cols-1 gap-3 p-4 sm:grid-cols-2">
         {addressList && addressList.length > 0
           ? addressList.map((singleAddressItem) => (
               <AddressCard
@@ -112,14 +112,14 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
                 setCurrentSelectedAddress={setCurrentSelectedAddress}
               />
             ))
-          : null}
+          : <p className="col-span-full rounded-lg border border-dashed p-4 text-center text-sm text-muted-foreground">Add a delivery address to continue.</p>}
       </div>
       <CardHeader>
         <CardTitle>
           {currentEditedId !== null ? "Edit Address" : "Add New Address"}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-3 pb-5">
         <CommonForm
           formControls={addressFormControls}
           formData={formData}

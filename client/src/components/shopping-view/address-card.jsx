@@ -16,20 +16,19 @@ function AddressCard({
           ? () => setCurrentSelectedAddress(addressInfo)
           : null
       }
-      className={`cursor-pointer border-red-700 ${
+      className={`cursor-pointer border transition-all hover:border-primary hover:shadow-sm ${
         selectedId?._id === addressInfo?._id
-          ? "border-red-900 border-[2px]"
-          : "border-black"
+          ? "border-primary bg-secondary ring-1 ring-primary"
+          : "border-border"
       }`}
     >
       <CardContent className="grid p-4 gap-4">
         <div className="flex flex-col gap-2">
-          <Label className="font-bold text-lg">Address: {addressInfo?.address}</Label>
-          <Label className="text-gray-600">City: {addressInfo?.city}</Label>
-          <Label className="text-gray-600">Pincode: {addressInfo?.pincode}</Label>
-          <Label className="text-gray-600">Phone: {addressInfo?.phone}</Label>
+          <Label className="text-base font-bold">{addressInfo?.address}</Label>
+          <Label className="text-muted-foreground">{addressInfo?.city}, {addressInfo?.pincode}</Label>
+          <Label className="text-muted-foreground">{addressInfo?.phone}</Label>
           {addressInfo?.notes && (
-            <Label className="text-gray-400 italic">Notes: {addressInfo?.notes}</Label>
+            <Label className="italic text-muted-foreground">Notes: {addressInfo?.notes}</Label>
           )}
         </div>
       </CardContent>

@@ -109,7 +109,7 @@ function CommonForm({ formControls, formData, setFormData, onSubmit, buttonText,
                     </div>)
                 }
             </div>
-            <Button disabled={isBtnDisabled} typr="submit" className='mt-2 w-full'>{buttonText || 'Submit'}</Button>
+            <Button disabled={isBtnDisabled} type="submit" className='mt-2 w-full'>{buttonText || 'Submit'}</Button>
         </form>
     );
 }
