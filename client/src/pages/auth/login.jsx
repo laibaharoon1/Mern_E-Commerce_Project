@@ -15,12 +15,13 @@ const initialState = {
 function AuthLogin() {
 
     const [formData, setFormData] = useState(initialState);
+    const [loginAs, setLoginAs] = useState("user");
     const dispatch = useDispatch();
 
     function onSubmit(event) {
         event.preventDefault();
 
-        dispatch(loginUser(formData)).then((data) => {
+        dispatch(loginUser({ ...formData, requestedRole: loginAs })).then((data) => {
             if (data?.payload?.success) {
                 toast(data?.payload?.message)
             } else {
@@ -38,6 +39,25 @@ function AuthLogin() {
                         to='/auth/register'> Register </Link>
                 </p>
             </div>
+            <div className="grid grid-cols-2 rounded-lg bg-secondary p-1">
+                <button
+                    type="button"
+                    onClick={() => setLoginAs("user")}
+                    className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${loginAs === "user" ? "bg-white shadow-sm" : "text-muted-foreground"}`}
+                >
+                    Customer
+                </button>
+                <button
+                    type="button"
+                    onClick={() => setLoginAs("admin")}
+                    className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${loginAs === "admin" ? "bg-white shadow-sm" : "text-muted-foreground"}`}
+                >
+                    Administrator
+                </button>
+            </div>
+            <p className="text-center text-sm text-muted-foreground">
+                {loginAs === "admin" ? "Use an account that has been assigned the admin role." : "Sign in to shop and manage your orders."}
+            </p>
             <CommonForm
                 formControls={loginFormControls}
                 buttonText={'Sign In'}

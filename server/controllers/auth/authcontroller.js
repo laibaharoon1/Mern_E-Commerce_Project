@@ -35,7 +35,7 @@ const registerUser = async (req, res) => {
 
 //login
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, requestedRole } = req.body;
 
     try {
         const checkUser = await User.findOne({email});
@@ -49,6 +49,15 @@ const loginUser = async (req, res) => {
             success : false,
             message : "Incorrect password! Please try again..."
         });
+
+        if (requestedRole && requestedRole !== checkUser.role) {
+            return res.status(403).json({
+                success: false,
+                message: requestedRole === "admin"
+                    ? "This account does not have administrator access."
+                    : "Please select the administrator portal for this account.",
+            });
+        }
 
         const token = jwt.sign(
             {id : checkUser._id, role : checkUser.role, email : checkUser.email, username : checkUser.userName}
